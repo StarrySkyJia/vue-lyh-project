@@ -1,0 +1,72 @@
+<template>
+  <div class="search-pane">
+    <MyForm v-bind="searchFormConfig" :modelValue="formData">
+      <template #btns>
+        <el-button plain size="small" @click="handleResetClick">重置</el-button>
+        <el-button type="primary" size="small" @click="handleQueryClick"
+          >提交</el-button
+        >
+      </template>
+      <template #advanceBtn>
+        <el-button plain size="small" @click="handleResetClick">重置</el-button>
+        <el-button type="primary" size="small" @click="handleQueryClick"
+          >提交</el-button
+        >
+      </template></MyForm
+    >
+    <el-divider></el-divider>
+  </div>
+</template>
+
+<script>
+import MyForm from "./form.vue";
+
+export default {
+  components: {
+    MyForm,
+  },
+  props: {
+    searchFormConfig: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      formData: {},
+    };
+  },
+  mounted() {
+    // 传给form组件的值
+    // 从配置中拿到搜索列表数据
+    const formDataOrigin = this.searchFormConfig.formItems ?? [];
+    // 遍历搜索列表数据,初始化为空
+    for (const item of formDataOrigin) {
+      this.$set(this.formData, item.field, "");
+    }
+  },
+  methods: {
+    // 重置搜索
+    handleResetClick() {
+      const formDataOrigin = [
+        ...(this.searchFormConfig.formItems ?? []),
+        ...(this.searchFormConfig.advanceFormItems ?? []),
+      ];
+      for (const item of formDataOrigin) {
+        this.$set(this.formData, item.field, "");
+      }
+      this.$emit("resetBtnClick", this.formData);
+    },
+    // 搜索处理
+    handleQueryClick() {
+      this.$emit("queryBtnClick", this.formData);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.el-divider--horizontal {
+  margin: 10px 0;
+}
+</style>
