@@ -13,5 +13,6 @@ module.exports = {
         "no-unused-vars": 0,
         "prettier/prettier": 0,
         "vue/valid-v-model": 0,
+        "vue/no-unused-vars": 0,
     },
 };

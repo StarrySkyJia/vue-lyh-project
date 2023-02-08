@@ -24,7 +24,7 @@ export const contentTableConfig = {
             prop: "itemCounts",
             label: "项目人数",
         },
-        { prop: "outline", label: "项目纲要" },
+        // { prop: "outline", label: "项目纲要" },
         {
             prop: "handler",
             label: "操作",

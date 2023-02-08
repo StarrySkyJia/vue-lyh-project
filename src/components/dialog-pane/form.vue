@@ -83,6 +83,13 @@
                   >
                   </el-date-picker>
                 </template>
+                <template v-else-if="item.type === 'picUpload'">
+                  <picUpload
+                    :imageUrl="modelValue[`${item.field}`]"
+                    :filePath="item.filePath"
+                    @changePicUrl="changePicUrl($event, item.field)"
+                  />
+                </template>
               </el-form-item>
             </el-col>
           </template>
@@ -97,7 +104,10 @@
 </template>
 
 <script>
+import picUpload from "@/baseUI/picUpload";
+
 export default {
+  components: { picUpload },
   props: {
     modelValue: {
       type: Object,
@@ -173,6 +183,13 @@ export default {
           [item.field]: option.title,
         });
       }
+    },
+    changePicUrl(url, field) {
+      console.log(url, field);
+      this.$emit("update:modelValue", {
+        ...this.modelValue,
+        [field]: url,
+      });
     },
     // 表单验证
     validateForm(dispatch) {

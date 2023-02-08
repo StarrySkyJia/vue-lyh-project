@@ -13,7 +13,10 @@
     >
       <template #otherTab="scope">
         <el-tab-pane label="成员管理" name="member ">
-          <Transfer :deptId="scope.data.deptId" />
+          <Transfer
+            :deptId="scope.data.deptId"
+            @changeDeptMember="changeDeptMember"
+          />
         </el-tab-pane>
       </template>
     </ContentPane>
@@ -51,6 +54,9 @@ export default {
     },
     resetBtnClick(queryInfo) {
       this.$refs.contentRef.getPageTableList(queryInfo);
+    },
+    changeDeptMember() {
+      this.$refs.contentRef.getPageTableList();
     },
   },
 };

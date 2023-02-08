@@ -13,13 +13,7 @@ export const dialogFormConfig = {
             placeholder: "请输入用户姓名",
             rules: [{ required: true, message: "请输入用户名称", trigger: "blur" }],
         },
-        {
-            field: "headImgUrl",
-            type: "input",
-            isPic: true,
-            label: "用户头像",
-            placeholder: "请输入用户头像",
-        },
+
         {
             field: "userId",
             type: "input",
@@ -68,6 +62,14 @@ export const dialogFormConfig = {
             type: "input",
             label: "角色ID",
             placeholder: "请输入用户角色ID",
+        },
+        {
+            field: "headImgUrl",
+            type: "picUpload",
+            isPic: true,
+            filePath: "avatar",
+            label: "用户头像",
+            placeholder: "请输入用户头像",
         },
     ],
 

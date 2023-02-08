@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     // 确认修改
-    handleComfirm() {
+    async handleComfirm() {
       const addData = this.value.filter((id) => {
         return this.orgValue.indexOf(id) === -1;
       });
@@ -76,11 +76,13 @@ export default {
       });
 
       if (addData.length !== 0) {
-        addDeptMember({ deptId: this.deptId, memberSets: addData });
+        await addDeptMember({ deptId: this.deptId, memberSets: addData });
       }
       if (removeData.length !== 0) {
-        removeDeptMember({ deptId: this.deptId, memberSets: removeData });
+        await removeDeptMember({ deptId: this.deptId, memberSets: removeData });
       }
+
+      this.$emit("changeDeptMember");
     },
 
     // 获取当前部门成员列表

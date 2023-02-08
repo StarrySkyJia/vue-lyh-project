@@ -103,20 +103,21 @@ export default {
       activeName: "editInfo",
     };
   },
+
   mounted() {
-    const typeObj = {
-      add: `editInfo`,
-      edit: `editInfo`,
-      check: `baseInfo`,
-      delete: `baseInfo`,
-    };
-    this.activeName = typeObj[this.type];
     this.initFormData([]);
   },
   methods: {
     openDialog(type, data) {
       this.dialogVisible = true;
       this.type = type;
+      const typeObj = {
+        add: `editInfo`,
+        edit: `editInfo`,
+        check: `baseInfo`,
+        delete: `baseInfo`,
+      };
+      this.activeName = typeObj[this.type];
       this.initFormData(data ?? []);
     },
     initFormData(data) {

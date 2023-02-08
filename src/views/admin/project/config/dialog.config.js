@@ -51,9 +51,10 @@ export const dialogFormConfig = {
         },
         {
             field: "itemImgUrl",
-            type: "input",
+            type: "picUpload",
             label: "项目图片地址",
             isPic: true,
+            filePath: "project",
             placeholder: "请输入项目图片地址",
         },
         {
