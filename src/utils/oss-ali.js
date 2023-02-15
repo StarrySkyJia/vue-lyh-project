@@ -2,9 +2,7 @@ import OSS from "ali-oss";
 const client = new OSS({
     region: "oss-cn-guangzhou",
     //云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，部署在服务端使用RAM子账号或STS，部署在客户端使用STS。
-    accessKeyId: "LTAI5tMCdmfm9ZJnk1Bs4LSE",
-    accessKeySecret: "2Nznq9e9xVQ3KfPSu2Sz7W7vKI5OwA",
-    bucket: "image-url-lyh",
+ 
 });
 
 /**
