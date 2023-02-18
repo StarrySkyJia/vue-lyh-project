@@ -26,6 +26,7 @@
         </MyDescription></el-tab-pane
       >
       <el-tab-pane
+        v-if="type === 'add' || type === 'edit'"
         :label="type === 'add' ? '新增信息' : '编辑信息'"
         name="editInfo"
       >
@@ -78,7 +79,11 @@ export default {
     },
     pageName: {
       type: String,
-      required: true,
+      default: "name",
+    },
+    isCustomMethos: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -117,7 +122,7 @@ export default {
         check: `baseInfo`,
         delete: `baseInfo`,
       };
-      this.activeName = typeObj[this.type];
+      this.activeName = typeObj[this.type] ?? type;
       this.initFormData(data ?? []);
     },
     initFormData(data) {
@@ -149,15 +154,33 @@ export default {
           data[item.field] = "";
         }
       }
-      this.dispatchAction("addPageDataAction");
+      if (!this.isCustomMethos) {
+        this.dispatchAction("addPageDataAction");
+      } else {
+        const fn = () => {
+          this.$emit("handleAddClick", this.formData);
+        };
+        this.$refs.form.validateForm(fn);
+      }
     },
     // 编辑
     handleEditClick() {
-      this.dispatchAction("updateDataAction");
+      if (!this.isCustomMethos) {
+        this.dispatchAction("updateDataAction");
+      } else {
+        const fn = () => {
+          this.$emit("handleEditClick", this.formData);
+        };
+        this.$refs.form.validateForm(fn);
+      }
     },
     // 删除
     handleDeleteClick() {
-      this.dispatchAction("deleteDateAction");
+      if (!this.isCustomMethos) {
+        this.dispatchAction("deleteDateAction");
+      } else {
+        this.$emit("handleDeleteClick", this.formData);
+      }
     },
 
     // 进行表单验证后，触发仓库中新增、删除、修改事件，封装起来

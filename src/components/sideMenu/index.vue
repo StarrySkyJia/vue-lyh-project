@@ -1,5 +1,10 @@
 <template>
-  <el-menu router>
+  <el-menu
+    router
+    class="el-menu-vertical-demo"
+    default-active="/allProject"
+    :collapse-transition="true"
+  >
     <div v-for="item in userRoutes" :key="item.name">
       <el-submenu v-if="item.children" :index="item.path">
         <template slot="title"
@@ -27,13 +32,23 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
+    isCollapse() {
+      return this.$store.state.isCollapse;
+    },
     ...mapGetters(["userRoutes"]),
+  },
+  data() {
+    return {};
   },
   mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
 ::v-deep .el-menu-item.is-active {
   background-color: #c6e2ff !important;
   border-radius: 10px;

@@ -4,12 +4,14 @@ import storage from "@/utils/storage";
 import { clearState } from "../index.js";
 import { passwordLogin, phoneLogin } from "@/api/login/login";
 import { mapFileToRoutes } from "@/utils/map-router.js";
+import { getMessageList } from "@/api/message";
 
 function initState() {
     return {
         userInfo: {},
         token: "",
         userRoutes: [],
+        messageNum: 0,
     };
 }
 
@@ -51,6 +53,20 @@ const user = {
                 resolve();
             });
         },
+        // 获取信息数量
+        getMessageAction({ state, commit }) {
+            console.log("更新信息！");
+            const query = {
+                isRead: 1,
+                messageType: 0,
+                pageNum: 0,
+                pageSize: 10,
+                userId: state.userInfo.userId,
+            };
+            getMessageList(query).then((res) => {
+                commit("SET_MESSAGE", res.total);
+            });
+        },
         // 刷新后缓存中获取数据,在仓库中导出，并在main中执行
         refreshLoadAction({ commit }) {
             const token = storage.get("ACCESS_TOKEN");
@@ -87,6 +103,10 @@ const user = {
         CLEAR_USER_STATE(state) {
             clearState(state, initState());
         },
+        SET_MESSAGE(state, messageNum) {
+            console.log(messageNum);
+            state.messageNum = messageNum;
+        },
     },
 };
 
@@ -106,7 +126,6 @@ function loginSuccess(commit, dispatch, { authorization, user }) {
     commit("SET_ROUTES", userRoutes);
 
     //登录成功后回到首页
-    console.log("登录成功", router);
     router.push("/index");
 }
 
@@ -120,6 +139,11 @@ function addRoute(roleId) {
         allRoutes = mapFileToRoutes("admin");
     } else {
         allRoutes = mapFileToRoutes("main");
+        // 添加项目空间路由
+        const projectSpaceRoutes = mapFileToRoutes("project");
+        projectSpaceRoutes.forEach((route) => {
+            router.addRoute("index", route);
+        });
     }
 
     // 递归遍历并添加到route中
@@ -131,7 +155,6 @@ function addRoute(roleId) {
                 });
                 _resurseGerRoute(route.children);
                 router.addRoute("index", route);
-                console.log(router);
             } else {
                 router.addRoute("index", route);
             }

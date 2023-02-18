@@ -10,6 +10,7 @@
           v-for="item in formItems"
           :key="item.label"
           :label="item.label"
+          :span="item.span"
         >
           <div v-if="item.isPic">
             <el-avatar :src="modelValue[`${item.field}`]"></el-avatar>

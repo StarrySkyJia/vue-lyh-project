@@ -87,7 +87,7 @@ export function getDepartmentOptions() {
         const deptOptions = [];
         getDepartmentList({ pageNum: 0, pageSize: 99 }).then((res) => {
             res.departmentList.forEach((dept) => {
-                deptOptions.push({ title: dept.deptName, value: dept.deptId });
+                deptOptions.push({ label: dept.deptName, value: dept.deptId });
             });
             resolve(deptOptions);
         });
@@ -99,7 +99,7 @@ export function getRoleOptions() {
         const roleOptions = [];
         getRoleList({ pageNum: 0, pageSize: 99 }).then((res) => {
             res.roleList.forEach((role) => {
-                roleOptions.push({ title: role.roleName, value: role.roleId });
+                roleOptions.push({ label: role.roleName, value: role.roleId });
             });
             resolve(roleOptions);
         });

@@ -92,10 +92,10 @@ export const dispatchRequest = (requestInfo) => {
             .catch((err) => {
                 requestAbort = false;
                 // 跟后端沟通请求信息类型
-                if (err.errMsg == "request:fail abort") {
+                if (err) {
                     reject({
                         errMsg: "请求超时，请重新尝试",
-                        status: 0,
+                        status: 10000,
                     });
                 } else {
                     reject(err);

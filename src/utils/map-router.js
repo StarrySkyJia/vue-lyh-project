@@ -22,6 +22,14 @@ export function mapFileToRoutes(path) {
             const route = require("../router/main" + key.split(".")[1]);
             allRoutes.push(route.default);
         });
+    } else if (path === "project") {
+        //项目空间路由
+        const routeFiles = require.context("@/router/project", true, /\.js/);
+        routeFiles.keys().forEach((key) => {
+            // 拼接完整路径
+            const route = require("../router/project" + key.split(".")[1]);
+            allRoutes.push(route.default);
+        });
     }
 
     // 返回所有路由信息，结构为有children的路由对象

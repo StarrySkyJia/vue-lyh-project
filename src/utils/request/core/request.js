@@ -88,6 +88,7 @@ export default class Request {
             }
         } catch (error) {
             // 在处理以上步骤时发生报错，调用$http定义的报错回调函数
+            console.log(error, "接收超时错误");
             this.requestError && this.requestError(error);
             return Promise.reject(error);
         } finally {

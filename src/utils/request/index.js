@@ -1,5 +1,4 @@
 import { Request } from "./requestClasses";
-import store from "../../store";
 const apiUrl = "http://120.78.88.135:8080";
 import { Loading, Message, MessageBox } from "element-ui";
 
@@ -153,7 +152,6 @@ $http.dataFactory = (res) => {
 
     // 500服务器错误，其他错误提示
     if (httpData.code == 500) {
-        console.log(httpData, res.isPrompt);
         if (res.isPrompt) {
             setTimeout(() => {
                 Message.error({
@@ -202,7 +200,7 @@ const showRequestError = (e) => {
         errMsg = "网络请求错误：请检查api地址能否访问正常";
     }
     Message({
-        title: errMsg,
+        message: errMsg,
     });
 };
 
@@ -211,6 +209,10 @@ $http.requestError = (error) => {
     // 如果是0错误，那么将数据返回给调用时处理;
     if (error.status === 0) {
         throw error;
+    } else if (error.status === 10000) {
+        Message.error({
+            message: error.errMsg,
+        });
     } else {
         // 如果不是0错误，则进行错误信息展示
         setTimeout(() => showRequestError(error), 10);

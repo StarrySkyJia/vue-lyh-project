@@ -17,6 +17,15 @@
           <div class="name">{{ scope.row.itemName }}</div>
         </div>
       </template>
+      <template #otherTab="scope">
+        <el-tab-pane label="成员管理" name="member">
+          <Transfer
+            :itemId="scope.data.itemId"
+            :itemName="scope.data.itemName"
+            @changeMember="changeMember"
+          />
+        </el-tab-pane>
+      </template>
     </ContentPane>
   </div>
 </template>
@@ -27,6 +36,7 @@ import ContentPane from "@/components/content-pane";
 import { searchFormConfig } from "./config/search.config";
 import { contentTableConfig } from "./config/content.config";
 import { dialogFormConfig, getUserOptions } from "./config/dialog.config";
+import Transfer from "./transfer";
 
 import { setSelectOption } from "@/hooks/select-option.js";
 
@@ -41,6 +51,7 @@ export default {
   components: {
     SearchPane,
     ContentPane,
+    Transfer,
   },
   mounted() {
     setSelectOption(getUserOptions, this.dialogFormConfig, "managerName");
@@ -52,6 +63,9 @@ export default {
     },
     resetBtnClick(queryInfo) {
       this.$refs.contentRef.getPageTableList(queryInfo);
+    },
+    changeMember() {
+      this.$refs.contentRef.getPageTableList();
     },
   },
 };

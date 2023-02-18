@@ -78,7 +78,7 @@ export function getUserOptions() {
         const managerOptions = [];
         getUserList({ pageNum: 0, pageSize: 99 }).then((res) => {
             res.users.forEach((dept) => {
-                managerOptions.push({ title: dept.realName, value: dept.userId });
+                managerOptions.push({ label: dept.realName, value: dept.userId });
             });
             resolve(managerOptions);
         });

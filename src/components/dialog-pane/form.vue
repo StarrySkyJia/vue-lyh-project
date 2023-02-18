@@ -69,7 +69,7 @@
                       v-for="option in item.options"
                       :key="option.value"
                       :value="option"
-                      :label="option.title"
+                      :label="option.label"
                     >
                     </el-option>
                   </el-select>
@@ -174,18 +174,17 @@ export default {
       if (item.contactField) {
         this.$emit("update:modelValue", {
           ...this.modelValue,
-          [item.field]: option.title,
+          [item.field]: option.label,
           [item.contactField]: option.value,
         });
       } else {
         this.$emit("update:modelValue", {
           ...this.modelValue,
-          [item.field]: option.title,
+          [item.field]: option.label,
         });
       }
     },
     changePicUrl(url, field) {
-      console.log(url, field);
       this.$emit("update:modelValue", {
         ...this.modelValue,
         [field]: url,
@@ -194,7 +193,7 @@ export default {
     // 表单验证
     validateForm(dispatch) {
       this.$refs.dialogForm.validate((valid) => {
-        if (valid) {
+        if (valid && dispatch) {
           dispatch();
         }
         return valid;

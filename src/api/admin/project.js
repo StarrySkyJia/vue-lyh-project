@@ -6,6 +6,9 @@ const api = {
     getProjectList: "/item/getItemByCondition",
     getProjectDetail: "/item/getItemById",
     updateProject: "/item/update",
+    getProjectMemberList: "/item/getUserListByItem",
+    addProjectMember: "/item/addItemUser",
+    removeProjectMember: "/item/deleteItemUser",
 };
 
 //新增项目
@@ -31,4 +34,19 @@ export function getProjectList(data) {
 // 编辑项目
 export function updateProject(data) {
     return request.post(api.updateProject, data);
+}
+
+// 获取项目成员
+export function getProjectMemberList(data) {
+    return request.post(api.getProjectMemberList, data);
+}
+
+// 添加项目成员
+export function addProjectMember(data) {
+    return request.post(api.addProjectMember, data);
+}
+
+// 删除项目成员
+export function removeProjectMember(data) {
+    return request.post(api.removeProjectMember, data);
 }

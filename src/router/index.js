@@ -40,6 +40,25 @@ const routes = [{
         },
         component: () =>
             import ("@/views/index.vue"),
+        children: [{
+                path: "/userInfo",
+                name: "userInfo",
+                meta: {
+                    title: "个人页",
+                },
+                component: () =>
+                    import ("@/views/main/user/index.vue"),
+            },
+            {
+                path: "/myMessage",
+                name: "myMessage",
+                meta: {
+                    title: "我的信息",
+                },
+                component: () =>
+                    import ("@/views/main/user/message/index.vue"),
+            },
+        ],
     },
 ];
 

@@ -10,13 +10,6 @@ const adminApis = {
     ...projectApi,
 };
 
-// const addDataApis = {
-//     role: roleApi.addRole,
-//     project: projectApi.addProject,
-//     department: departmentApi.addDepartment,
-//     user: userApi.addUser,
-// };
-
 function initState() {
     return {
         // 用户
