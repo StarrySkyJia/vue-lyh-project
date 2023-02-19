@@ -26,6 +26,7 @@
         </MyDescription></el-tab-pane
       >
       <el-tab-pane
+        v-if="type === 'add' || type === 'edit'"
         :label="type === 'add' ? '新增信息' : '编辑信息'"
         name="editInfo"
       >
@@ -78,7 +79,11 @@ export default {
     },
     pageName: {
       type: String,
-      required: true,
+      default: "name",
+    },
+    isCustomMethos: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -108,7 +113,7 @@ export default {
     this.initFormData([]);
   },
   methods: {
-    openDialog(type, data) {
+    openDialog(type, data = []) {
       this.dialogVisible = true;
       this.type = type;
       const typeObj = {
@@ -118,12 +123,15 @@ export default {
         delete: `baseInfo`,
       };
       this.activeName = typeObj[this.type];
-      this.initFormData(data ?? []);
+      this.initFormData(data);
     },
     initFormData(data) {
       // 传给form组件的值
-      // 从配置中拿到搜索列表数据
-      const formDataOrigin = this.dialogFormConfig.formItems ?? [];
+      // 从配置中拿到搜索列表数据\
+      let formDataOrigin = [];
+      if (this.dialogFormConfig.formItems) {
+        formDataOrigin = this.dialogFormConfig.formItems;
+      }
       // 遍历搜索列表数据,初始化为空
       for (const item of formDataOrigin) {
         let value = "";
@@ -149,15 +157,33 @@ export default {
           data[item.field] = "";
         }
       }
-      this.dispatchAction("addPageDataAction");
+      if (!this.isCustomMethos) {
+        this.dispatchAction("addPageDataAction");
+      } else {
+        const fn = () => {
+          this.$emit("handleAddClick", this.formData);
+        };
+        this.$refs.form.validateForm(fn);
+      }
     },
     // 编辑
     handleEditClick() {
-      this.dispatchAction("updateDataAction");
+      if (!this.isCustomMethos) {
+        this.dispatchAction("updateDataAction");
+      } else {
+        const fn = () => {
+          this.$emit("handleEditClick", this.formData);
+        };
+        this.$refs.form.validateForm(fn);
+      }
     },
     // 删除
     handleDeleteClick() {
-      this.dispatchAction("deleteDateAction");
+      if (!this.isCustomMethos) {
+        this.dispatchAction("deleteDateAction");
+      } else {
+        this.$emit("handleDeleteClick", this.formData);
+      }
     },
 
     // 进行表单验证后，触发仓库中新增、删除、修改事件，封装起来

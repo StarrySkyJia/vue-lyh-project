@@ -48,7 +48,6 @@ export default {
 
       // 调用 ali-oss 中的方法
       put(option.file.name, option.file).then((res) => {
-        console.log(res);
         this.imageUrl = res.url;
       });
     },

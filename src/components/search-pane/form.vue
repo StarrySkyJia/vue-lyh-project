@@ -25,21 +25,42 @@
                 @update:modelValue="handleValueChange($event, item.field)"
               ></el-input>
             </template>
+            <!-- 下拉框选择，只选择值 -->
             <template v-else-if="item.type === 'select'">
               <el-select
                 :placeholder="item.placeholder"
                 v-bind="item.otherOptions"
                 style="width: 100%"
                 v-model="modelValue[`${item.field}`]"
-                @update:modelValue="handleValueChange($event, item.field)"
+                @change="handleSelectValueChange($event, item)"
               >
                 <!-- 选项也要遍历 -->
                 <el-option
                   v-for="option in item.options"
                   :key="option.value"
-                  :value="option.title"
+                  :value="option.value"
+                  :label="option.label"
                 >
-                  {{ option.title }}
+                </el-option>
+              </el-select>
+            </template>
+            <!-- 下拉框选择，选择文本和值 -->
+            <template v-else-if="item.type === 'selectLabel'">
+              <el-select
+                :placeholder="item.placeholder"
+                v-bind="item.otherOptions"
+                value-key="value"
+                style="width: 100%"
+                v-model="modelValue[`${item.field}`]"
+                @change="handleValueChange($event, item)"
+              >
+                <!-- 选项也要遍历 -->
+                <el-option
+                  v-for="option in item.options"
+                  :key="option.value"
+                  :value="option.value"
+                  :label="option.label"
+                >
                 </el-option>
               </el-select>
             </template>
@@ -102,21 +123,42 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 ></el-input>
               </template>
+              <!-- 下拉框选择，只选择值 -->
               <template v-else-if="item.type === 'select'">
                 <el-select
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
                   v-model="modelValue[`${item.field}`]"
-                  @update:modelValue="handleValueChange($event, item.field)"
+                  @change="handleSelectValueChange($event, item)"
                 >
                   <!-- 选项也要遍历 -->
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
-                    :value="option.title"
+                    :value="option.value"
+                    :label="option.label"
                   >
-                    {{ option.title }}
+                  </el-option>
+                </el-select>
+              </template>
+              <!-- 下拉框选择，选择文本和值 -->
+              <template v-else-if="item.type === 'selectLabel'">
+                <el-select
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  value-key="value"
+                  style="width: 100%"
+                  v-model="modelValue[`${item.field}`]"
+                  @change="handleValueChange($event, item)"
+                >
+                  <!-- 选项也要遍历 -->
+                  <el-option
+                    v-for="option in item.options"
+                    :key="option.value"
+                    :value="option.value"
+                    :label="option.label"
+                  >
                   </el-option>
                 </el-select>
               </template>
@@ -194,6 +236,21 @@ export default {
         ...this.props.modelValue,
         [field]: value,
       });
+    },
+
+    handleSelectValueChange(option, item) {
+      if (item.contactField) {
+        this.$emit("update:modelValue", {
+          ...this.modelValue,
+          [item.field]: option.label,
+          [item.contactField]: option.value,
+        });
+      } else {
+        this.$emit("update:modelValue", {
+          ...this.modelValue,
+          [item.field]: option,
+        });
+      }
     },
     // 打开高级搜索
     advanceSearch() {

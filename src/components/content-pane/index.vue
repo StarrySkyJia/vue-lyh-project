@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import MyTable from "./table.vue";
+import MyTable from "@/baseUI/table";
 import DialogPane from "@/components/dialog-pane";
 import { changeUserState } from "@/api/admin/user";
 
@@ -150,7 +150,6 @@ export default {
     },
     // 编辑按钮
     handleEditClick(rowData) {
-      console.log(rowData);
       this.$refs.dialogRef.openDialog("edit", rowData);
     },
     // 删除按钮
@@ -159,7 +158,6 @@ export default {
     },
     // 更改用户状态
     changeUserStatus(userId) {
-      console.log(userId);
       changeUserState(userId).then(() => {
         this.getPageTableList(this.pervQueryInfo);
       });

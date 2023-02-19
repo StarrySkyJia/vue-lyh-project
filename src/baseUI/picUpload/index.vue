@@ -8,9 +8,28 @@
       :on-success="handleSuccess"
       multiple
     >
-      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <img
+        v-if="imageUrl"
+        :style="{ width: picWidth, height: picWidth }"
+        :src="imageUrl"
+        class="avatar"
+      />
+
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
+    <div class="bottom">
+      <el-button type="text" icon="el-icon-view" @click="checkPic"
+        >查看大图</el-button
+      >
+    </div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="50%"
+      top="5vh"
+      append-to-body
+    >
+      <img width="100%" :src="imageUrl" />
+    </el-dialog>
   </div>
 </template>
 
@@ -28,10 +47,15 @@ export default {
       default: "",
       require: true,
     },
+    picWidth: {
+      type: String,
+      default: "100px",
+    },
   },
   data() {
     return {
       fileList: [],
+      dialogVisible: false,
     };
   },
   mounted() {},
@@ -56,6 +80,9 @@ export default {
       put(this.filePath, fileNames, option.file).then((res) => {
         this.$emit("changePicUrl", res.url);
       });
+    },
+    checkPic() {
+      this.dialogVisible = true;
     },
   },
 };
@@ -94,9 +121,14 @@ export default {
   line-height: 100px;
   text-align: center;
 }
-.avatar {
-  width: 100px;
-  height: 100px;
-  display: block;
+.avatar-uploader {
+  position: relative;
+  .avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+  }
+  .bottom {
+  }
 }
 </style>

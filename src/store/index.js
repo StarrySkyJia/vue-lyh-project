@@ -1,21 +1,50 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
 import user from "./modules/user";
 import admin from "./modules/admin";
+import project from "./modules/project";
+import module from "./modules/module";
+
 import getters from "./getters";
+import storage from "@/utils/storage";
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    state: {},
-    mutations: {},
+    state: {
+        isCollapse: false,
+        // 为真则是项目空间的侧边栏
+        isSpaceMenu: false,
+        currentTab: "system",
+    },
+    mutations: {
+        SET_COLLAPSE(state, isCollapse) {
+            state.isCollapse = isCollapse;
+            storage.set("IS_COLLAPSE", isCollapse, 30 * 86400);
+        },
+        SET_SPACE_MENU(state, isSpaceMenu) {
+            state.isSpaceMenu = isSpaceMenu;
+            storage.set("IS_SPACE_COLLAPSE", isSpaceMenu, 30 * 86400);
+        },
+        SET_HEARD_TAB(state, currentTab) {
+            state.currentTab = currentTab;
+            storage.set("HEARD_TAB", currentTab, 30 * 86400);
+        },
+    },
     actions: {},
-    modules: { user, admin },
+    modules: { user, admin, project, module },
     getters,
 });
 
 // 刷新后从缓存中获取用户信息
 export function setupStore() {
     store.dispatch("refreshLoadAction");
+    store.dispatch("refreshProjectStoreAction");
+    store.dispatch("refreshModuleStoreAction");
+    store.commit("SET_COLLAPSE", storage.get("IS_COLLAPSE"));
+    store.commit("SET_SPACE_MENU", storage.get("IS_SPACE_COLLAPSE"));
+    store.commit("SET_HEARD_TAB", storage.get("HEARD_TAB"));
 }
 
 export default store;

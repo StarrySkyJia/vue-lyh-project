@@ -8,8 +8,11 @@
 
       <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="200px">
-          <sideMenu></sideMenu>
+        <el-aside class="aside" :width="isCollapse ? '0px' : '200px'">
+          <!-- 不是项目空间侧边栏，那么就是 管理员的管理侧边栏或者用户的项目中心侧边栏 -->
+          <sideMenu v-if="!isSpaceMenu"></sideMenu>
+          <!-- 项目空间的侧边栏，直接替换 -->
+          <ProjectSideMenu v-if="isSpaceMenu" />
         </el-aside>
 
         <!-- view窗口 -->
@@ -25,12 +28,23 @@
 <script>
 import Header from "@/components/header";
 import SideMenu from "@/components/sideMenu";
+import ProjectSideMenu from "@/components/project-sideMenu";
 import Title from "@/components/content-title";
+
 export default {
   data() {
     return {};
   },
-  components: { Header, SideMenu, Title },
+  components: { Header, SideMenu, Title, ProjectSideMenu },
+  computed: {
+    isCollapse() {
+      return JSON.parse(this.$store.state.isCollapse);
+    },
+    isSpaceMenu() {
+      return JSON.parse(this.$store.state.isSpaceMenu);
+    },
+  },
+
   mounted() {},
   methods: {},
 };
@@ -51,10 +65,17 @@ export default {
   background-color: #fff;
 }
 
+.aside {
+  height: calc(100vh - 60px);
+}
+
 .page-content {
   height: calc(100vh - 60px);
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
   .page-info {
+    flex: 1;
     background-color: #fff;
     border-radius: 7px;
   }
